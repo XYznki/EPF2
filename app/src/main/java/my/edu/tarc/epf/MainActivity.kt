@@ -3,6 +3,8 @@ package my.edu.tarc.epf
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
@@ -14,7 +16,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.findFragment
 import my.edu.tarc.epf.databinding.ActivityMainBinding
+import my.edu.tarc.epf.ui.profile.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener{
-            _,destination,_->
+                _,destination,_->
             if(destination.id==R.id.nav_about)
             {
                 binding.appBarMain.toolbar.menu.findItem(R.id.action_settings).isVisible=false
@@ -50,6 +54,16 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+
+        //Navigate to profile
+        //Index 0 = Profile Picture
+        val view = navView.getHeaderView(0)
+
+        view.setOnClickListener{
+            findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.nav_profile)
+            binding.drawerLayout.closeDrawers()
+        }
+
         //back press
         val backPressedCallback = object: OnBackPressedCallback(true)
         {
